@@ -1,11 +1,11 @@
 {
     "name": "vatgia/installer",
-    "description": "CNP Framework application installer.",
+    "description": "VNP Framework application installer.",
     "keywords": ["vnp", "vatgia"],
     "license": "MIT",
     "authors": [
         {
-            "name": "Stephen Nguyễn",
+            "name": "Nguyễn Thế Định",
             "email": "ntdinh1987@gmail.com"
         }
     ],
