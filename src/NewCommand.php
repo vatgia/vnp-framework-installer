@@ -89,8 +89,8 @@ class NewCommand extends Command
             ->extract($zipFile, $directory . '/app')
             ->cleanUp($zipFile);
 
-        $this->moveAllFile($directory . '/app.git/', $directory);
-        $this->rrmdir($directory . '/app.git/');
+        $this->moveAllFile($directory . '/app/app.git/', $directory);
+        $this->rrmdir($directory . '/app/app.git/');
 
         $composer = $this->findComposer();
 
