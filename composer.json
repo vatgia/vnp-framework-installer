@@ -1,17 +1,17 @@
 {
-    "name": "laravel/installer",
-    "description": "Laravel application installer.",
-    "keywords": ["laravel"],
+    "name": "vatgia/installer",
+    "description": "CNP Framework application installer.",
+    "keywords": ["vnp", "vatgia"],
     "license": "MIT",
     "authors": [
         {
-            "name": "Taylor Otwell",
-            "email": "taylorotwell@gmail.com"
+            "name": "Stephen Nguyễn",
+            "email": "ntdinh1987@gmail.com"
         }
     ],
     "autoload": {
         "psr-4": {
-            "Laravel\\Installer\\Console\\": "src/"
+            "Vatgia\\Installer\\Console\\": "src/"
         }
     },
     "require": {
@@ -22,6 +22,6 @@
         "symfony/process": "~2.3|~3.0"
     },
     "bin": [
-        "laravel"
+        "vnp-framework"
     ]
 }
