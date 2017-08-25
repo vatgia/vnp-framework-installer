@@ -40,7 +40,8 @@ class NewCommand extends Command
             ->setName('new')
             ->setDescription('Create a new VNP application.')
             ->addArgument('name', InputArgument::OPTIONAL)
-            ->addOption('force', null, InputOption::VALUE_NONE, 'Forces install even if the directory already exists');
+            ->addOption('force', null, InputOption::VALUE_NONE, 'Forces install even if the directory already exists')
+            ->addOption('view', 'dv', InputOption::VALUE_NONE, 'Install with app folder. For dev view');
     }
 
     /**
@@ -83,14 +84,18 @@ class NewCommand extends Command
         $this->prepareWritableDirectories($directory, $output);
 
 
-        $output->writeln('<info>Download app...</info>');
-        //Download app
-        $this->downloadApp($zipFile = $this->makeFilename())
-            ->extract($zipFile, $directory . '/app')
-            ->cleanUp($zipFile);
+        if (!$input->getOption('view')) {
 
-        $this->moveAllFile($directory . '/app/app.git/', $directory . '/app/');
-        $this->rrmdir($directory . '/app/app.git/');
+            $output->writeln('<info>Download app...</info>');
+            //Download app
+            $this->downloadApp($zipFile = $this->makeFilename())
+                ->extract($zipFile, $directory . '/app')
+                ->cleanUp($zipFile);
+
+            $this->moveAllFile($directory . '/app/app.git/', $directory . '/app/');
+            $this->rrmdir($directory . '/app/app.git/');
+        }
+
 
         $composer = $this->findComposer();
 
@@ -154,6 +159,7 @@ class NewCommand extends Command
     {
         $response = (new Client)->get('http://gitlab.hoidap.vn/vnp-framework/view/repository/archive.zip?ref=master');
         file_put_contents($zipFile, $response->getBody());
+
         return $this;
     }
 
@@ -168,6 +174,7 @@ class NewCommand extends Command
     {
         $response = (new Client)->get('http://gitlab.hoidap.vn/vnp-framework/app/repository/archive.zip?ref=master');
         file_put_contents($zipFile, $response->getBody());
+
         return $this;
     }
 
@@ -263,9 +270,11 @@ class NewCommand extends Command
         $filesystem = new Filesystem;
 
         try {
-//            $filesystem->chmod($appDirectory . DIRECTORY_SEPARATOR . "bootstrap/cache", 0755, 0000, true);
+
             $filesystem->chmod($appDirectory . DIRECTORY_SEPARATOR . "ipstore", 0755, 0000, true);
             $filesystem->chmod($appDirectory . DIRECTORY_SEPARATOR . "ipdberror", 0755, 0000, true);
+            $filesystem->chmod($appDirectory . DIRECTORY_SEPARATOR . "storage", 0755, 0000, true);
+
         } catch (IOExceptionInterface $e) {
             $output->writeln('<comment>You should verify that the "ipstore" and "ipdberror" directories are writable.</comment>');
         }
