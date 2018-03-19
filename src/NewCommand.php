@@ -94,16 +94,31 @@ class NewCommand extends Command
 
             $this->moveAllFile($directory . '/app/app.git/', $directory . '/app/');
             $this->rrmdir($directory . '/app/app.git/');
+
+            /**
+             * Download Database
+             */
+            $output->writeln('<info>Download database...</info>');
+            //Download app
+            $this->downloadDatabase($zipFile = $this->makeFilename())
+                ->extract($zipFile, $directory . '/database')
+                ->cleanUp($zipFile);
+
+            $this->moveAllFile($directory . '/database/database.git/', $directory . '/database/');
+            $this->rrmdir($directory . '/database/database.git/');
         }
 
 
         $composer = $this->findComposer();
+        $database_composer = $this->findComposer('database');
 
         $commands = [
             $composer . ' install --no-scripts',
             $composer . ' run-script post-root-package-install',
             //$composer . ' run-script post-install-cmd',
             //$composer . ' run-script post-create-project-cmd',
+            //Database
+            $database_composer . ' install --no-scripts',
         ];
 
         if ($input->getOption('no-ansi')) {
@@ -173,6 +188,21 @@ class NewCommand extends Command
     protected function downloadApp($zipFile)
     {
         $response = (new Client)->get('http://gitlab.hoidap.vn/vnp-framework/app/repository/archive.zip?ref=master');
+        file_put_contents($zipFile, $response->getBody());
+
+        return $this;
+    }
+
+    /**
+     * Download the temporary Zip to the given file.
+     *
+     * @param  string $zipFile
+     * @param  string $version
+     * @return $this
+     */
+    protected function downloadDatabase($zipFile)
+    {
+        $response = (new Client)->get('http://gitlab.hoidap.vn/vnp-framework/database/repository/archive.zip?ref=master');
         file_put_contents($zipFile, $response->getBody());
 
         return $this;
@@ -287,9 +317,9 @@ class NewCommand extends Command
      *
      * @return string
      */
-    protected function findComposer()
+    protected function findComposer($dir = null)
     {
-        if (file_exists(getcwd() . '/composer.phar')) {
+        if (file_exists(getcwd() . ($dir ? ('/' . $dir) : '') . '/composer.phar')) {
             return '"' . PHP_BINARY . '" composer.phar';
         }
 
