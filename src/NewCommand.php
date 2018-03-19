@@ -118,6 +118,7 @@ class NewCommand extends Command
             //$composer . ' run-script post-install-cmd',
             //$composer . ' run-script post-create-project-cmd',
             //Database
+            'cd database',
             $database_composer . ' install --no-scripts',
         ];
 
