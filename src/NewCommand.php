@@ -63,7 +63,10 @@ class NewCommand extends Command
 
         $this->output = $output;
 
-        $directory = ($input->getArgument('name')) ? getcwd() . '/' . $input->getArgument('name') : getcwd();
+        $name = $input->getArgument('name');
+        $name = ($name == '.') ? '' : $name;
+
+        $directory = ($name) ? getcwd() . '/' . $name : getcwd();
 
         if (!$input->getOption('force')) {
             $this->verifyApplicationDoesntExist($directory);
