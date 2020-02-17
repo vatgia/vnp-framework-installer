@@ -29,6 +29,14 @@ class NewCommand extends Command
      */
     protected $output;
 
+    protected $viewZipLink = 'http://git.vatgia.vn/vnp-framework/view/-/archive/master/view-master.zip';
+
+    protected $appZipLink = 'http://git.vatgia.vn/vnp-framework/app/-/archive/master/app-master.zip';
+
+    protected $databaseZipLink = 'http://git.vatgia.vn/vnp-framework/database/-/archive/master/database-master.zip';
+
+    protected $docsZipLink = 'http://git.vatgia.vn/vnp-framework/docs/-/archive/master/docs-master.zip';
+
     /**
      * Configure the command options.
      *
@@ -176,7 +184,7 @@ class NewCommand extends Command
      */
     protected function download($zipFile)
     {
-        $response = (new Client)->get('http://gitlab.hoidap.vn/vnp-framework/view/repository/archive.zip?ref=master');
+        $response = (new Client)->get($this->viewZipLink);
         file_put_contents($zipFile, $response->getBody());
 
         return $this;
@@ -191,7 +199,7 @@ class NewCommand extends Command
      */
     protected function downloadApp($zipFile)
     {
-        $response = (new Client)->get('http://gitlab.hoidap.vn/vnp-framework/app/repository/archive.zip?ref=master');
+        $response = (new Client)->get($this->appZipLink);
         file_put_contents($zipFile, $response->getBody());
 
         return $this;
@@ -206,7 +214,7 @@ class NewCommand extends Command
      */
     protected function downloadDatabase($zipFile)
     {
-        $response = (new Client)->get('http://gitlab.hoidap.vn/vnp-framework/database/repository/archive.zip?ref=master');
+        $response = (new Client)->get($this->databaseZipLink);
         file_put_contents($zipFile, $response->getBody());
 
         return $this;
