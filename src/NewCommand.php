@@ -85,11 +85,10 @@ class NewCommand extends Command
         $output->writeln('<info>Download view...</info>');
 
         //Download view
-        echo $directory;die;
         $this->download($zipFile = $this->makeFilename())
-            ->extract($zipFile, $directory);
-//            ->cleanUp($zipFile);
-die;
+            ->extract($zipFile, $directory)
+            ->cleanUp($zipFile);
+
         $this->moveAllFile($directory . '/view.git/', $directory);
         $this->rrmdir($directory . '/view.git/');
 
