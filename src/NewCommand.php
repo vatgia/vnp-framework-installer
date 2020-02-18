@@ -29,7 +29,8 @@ class NewCommand extends Command
      */
     protected $output;
 
-    protected $viewZipLink = 'http://git.vatgia.vn/vnp-framework/view/-/archive/master/view-master.zip';
+//    protected $viewZipLink = 'http://git.vatgia.vn/vnp-framework/view/-/archive/master/view-master.zip';
+    protected $viewZipLink = 'https://github.com/vatgia/vnp-framework/archive/master.zip';
 
     protected $appZipLink = 'http://git.vatgia.vn/vnp-framework/app/-/archive/master/app-master.zip';
 
@@ -82,42 +83,42 @@ class NewCommand extends Command
 
         $output->writeln('<info>Crafting application...</info>');
 
-        $output->writeln('<info>Download view...</info>');
+        $output->writeln('<info>Download code...</info>');
 
         //Download view
         $this->download($zipFile = $this->makeFilename())
             ->extract($zipFile, $directory)
             ->cleanUp($zipFile);
 
-        $this->moveAllFile($directory . '/view.git/', $directory);
-        $this->rrmdir($directory . '/view.git/');
+        $this->moveAllFile($directory . '/vnp-framework-master/', $directory);
+        $this->rrmdir($directory . '/vnp-framework-master/');
 
         $this->prepareWritableDirectories($directory, $output);
 
 
-        if (!$input->getOption('view')) {
-
-            $output->writeln('<info>Download app...</info>');
-            //Download app
-            $this->downloadApp($zipFile = $this->makeFilename())
-                ->extract($zipFile, $directory . '/app')
-                ->cleanUp($zipFile);
-
-            $this->moveAllFile($directory . '/app/app.git/', $directory . '/app/');
-            $this->rrmdir($directory . '/app/app.git/');
-
-            /**
-             * Download Database
-             */
-            $output->writeln('<info>Download database...</info>');
-            //Download app
-            $this->downloadDatabase($zipFile = $this->makeFilename())
-                ->extract($zipFile, $directory . '/database')
-                ->cleanUp($zipFile);
-
-            $this->moveAllFile($directory . '/database/database.git/', $directory . '/database/');
-            $this->rrmdir($directory . '/database/database.git/');
-        }
+//        if (!$input->getOption('view')) {
+//
+//            $output->writeln('<info>Download app...</info>');
+//            //Download app
+//            $this->downloadApp($zipFile = $this->makeFilename())
+//                ->extract($zipFile, $directory . '/app')
+//                ->cleanUp($zipFile);
+//
+//            $this->moveAllFile($directory . '/app/app.git/', $directory . '/app/');
+//            $this->rrmdir($directory . '/app/app.git/');
+//
+//            /**
+//             * Download Database
+//             */
+//            $output->writeln('<info>Download database...</info>');
+//            //Download app
+//            $this->downloadDatabase($zipFile = $this->makeFilename())
+//                ->extract($zipFile, $directory . '/database')
+//                ->cleanUp($zipFile);
+//
+//            $this->moveAllFile($directory . '/database/database.git/', $directory . '/database/');
+//            $this->rrmdir($directory . '/database/database.git/');
+//        }
 
 
         $composer = $this->findComposer();
